@@ -1,0 +1,25 @@
+{
+  "name": "chai-sync-layer-suite",
+  "description": "Chai suite for sync-layer library",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/toptal/chai-sync-layer-suite"
+  },
+  "author": "Sasha Koss <sasha@toptal.com>",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "chai-shallow-deep-equal": "^1.0.0",
+    "mocha": "^2.0.1",
+    "rewire": "^2.1.3",
+    "rewire-test-helpers": "^0.1.0",
+    "sinon": "^1.12.1",
+    "sinon-chai": "^2.6.0"
+  },
+  "scripts": {
+    "test": "mocha \"./**/__tests__/*.js\" --require \"./src/__tests__/_test_helper\" --recursive --reporter spec",
+    "autotest": "npm test -- --watch"
+  }
+}
