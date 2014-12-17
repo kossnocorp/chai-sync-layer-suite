@@ -18,5 +18,6 @@ global.rewire = require('rewire');
 
 var rewireTestHelpers = require('rewire-test-helpers');
 global.injectDependencies = rewireTestHelpers.injectDependencies;
+global.injectDependenciesFilter = rewireTestHelpers.injectDependenciesFilter;
 global.rewired = rewireTestHelpers.rewired;
 

@@ -22,43 +22,56 @@ var describeSync = function(subjectName, subject, bodyFn) {
     throw "Module must be required via rewire (e.g `var answer = require('get-answer');`)"
   }
 
-  beforeEach(function() {
-    subject.__set__('requests', {
-      get: spy(),
-      signedGet: spy(),
-      post: spy(),
-      signedPost: spy(),
-      put: spy(),
-      signedPut: spy(),
-      delete: spy(),
-      signedDelete: spy()
+  describe(subjectName, function() {
+    beforeEach(function() {
+      var requests = {
+        get: spy(),
+        signedGet: spy(),
+        post: spy(),
+        signedPost: spy(),
+        put: spy(),
+        signedPut: spy(),
+        delete: spy(),
+        signedDelete: spy()
+      };
+      this.__originalRequests = subject.__get__('requests')
+      subject.__set__('requests', requests);
+
+      this.__syncRestoreFns = Object.keys(subject).reduce(function(acc, key) {
+        if (typeof subject[key] == 'function') {
+          subject[key].with = function() {
+            this.__with__ = Array.prototype.slice.call(arguments);
+            return this;
+          }
+
+          subject[key].__requests__ = requests;
+
+          return acc.concat(function() {
+            delete subject[key].with;
+            delete subject[key].__with__;
+            delete subject[key].__requests__;
+          });
+
+        } else {
+          return acc;
+        }
+      }, []);
     });
 
-    this.__syncRestoreFns = Object.keys(subject).reduce(function(acc, key) {
-      if (typeof subject[key] == 'function') {
-        subject[key].with = function() {
-          this.__with__ = Array.prototype.slice.call(arguments);
-          return this;
-        }
-
-        return acc.concat(function() {
-          delete subject[key].with;
-          delete subject[key].__with__;
-        });
-
-      } else {
-        return acc;
+    afterEach(function() {
+      if (this.__syncRestoreFns) {
+        this.__syncRestoreFns.forEach(function(fn) { fn() });
       }
-    }, []);
-  });
 
-  afterEach(function() {
-    if (this.__syncRestoreFns) {
-      this.__syncRestoreFns.forEach(function(fn) { fn() });
+      if (this.__originalRequests) {
+        subject.__set__('requests', this.__originalRequests);
+      }
+    });
+
+    if (bodyFn) {
+      bodyFn();
     }
   });
-
-  describe(subjectName, bodyFn);
 };
 
 module.exports = describeSync;
