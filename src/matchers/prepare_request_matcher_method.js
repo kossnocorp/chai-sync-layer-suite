@@ -6,7 +6,7 @@ var prepareRequestMatcherMethod = function(chai, utils) {
 
     var request = this._obj.__requests__[method];
     this.assert(
-      request.calledWith(path, payload),
+      payload ? request.calledWith(path, payload) : request.calledWith(path),
       'expected component to perform ' + method + ' request to ' +
       '"' + path + '" with ' + JSON.stringify(payload)
     );
