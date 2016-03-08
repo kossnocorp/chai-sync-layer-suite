@@ -100,11 +100,5 @@ describe('describeSync', function() {
     expect(obj.a.__requests__).to.be.undefined;
     expect(obj.__set__).to.be.calledWith('requests', 42);
   });
-
-  it('throw descriptive error if sync is required without rewire', function() {
-    expect(function() {
-      describeSync('obj', {})
-    }).to.throw("Module must be required via rewire (e.g `var answer = require('get-answer');`)")
-  });
 });
 
