@@ -1,3 +1,5 @@
+var RewireTestHelpers = require('rewire-test-helpers')
+
 var _global;
 if (typeof global != 'undefined') {
   _global = global;
@@ -18,10 +20,6 @@ var beforeEach = _global.beforeEach;
 var afterEach = _global.afterEach;
 
 var describeSync = function(subjectName, subject, bodyFn) {
-  if (!subject.__set__) {
-    throw "Module must be required via rewire (e.g `var answer = require('get-answer');`)"
-  }
-
   describe(subjectName, function() {
     beforeEach(function() {
       var requests = {
@@ -34,8 +32,8 @@ var describeSync = function(subjectName, subject, bodyFn) {
         delete: spy(),
         signedDelete: spy()
       };
-      this.__originalRequests = subject.__get__('requests')
-      subject.__set__('requests', requests);
+      this.__restoreRequests =
+        RewireTestHelpers.injectDependencies(subject, {requests: requests})
 
       this.__syncRestoreFns = Object.keys(subject).reduce(function(acc, key) {
         if (typeof subject[key] == 'function') {
@@ -63,8 +61,8 @@ var describeSync = function(subjectName, subject, bodyFn) {
         this.__syncRestoreFns.forEach(function(fn) { fn() });
       }
 
-      if (this.__originalRequests) {
-        subject.__set__('requests', this.__originalRequests);
+      if (typeof this.__restoreRequests === 'function') {
+        this.__restoreRequests()
       }
     });
 
@@ -75,4 +73,3 @@ var describeSync = function(subjectName, subject, bodyFn) {
 };
 
 module.exports = describeSync;
-
