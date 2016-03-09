@@ -1,7 +1,7 @@
 {
   "name": "chai-sync-layer-suite",
   "description": "Chai suite for sync-layer library",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/toptal/chai-sync-layer-suite"
