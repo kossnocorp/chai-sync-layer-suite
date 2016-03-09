@@ -1,4 +1,4 @@
-var RewireTestHelpers = require('rewire-test-helpers')
+var rewireMap = require('rewire-test-helpers').rewireMap
 
 var _global;
 if (typeof global != 'undefined') {
@@ -32,8 +32,7 @@ var describeSync = function(subjectName, subject, bodyFn) {
         delete: spy(),
         signedDelete: spy()
       };
-      this.__restoreRequests =
-        RewireTestHelpers.injectDependencies(subject, {requests: requests})
+      this.__restoreRewired = rewireMap(subject, {requests: requests})
 
       this.__syncRestoreFns = Object.keys(subject).reduce(function(acc, key) {
         if (typeof subject[key] == 'function') {
@@ -61,8 +60,8 @@ var describeSync = function(subjectName, subject, bodyFn) {
         this.__syncRestoreFns.forEach(function(fn) { fn() });
       }
 
-      if (typeof this.__restoreRequests === 'function') {
-        this.__restoreRequests()
+      if (typeof this.__restoreRewired === 'function') {
+        this.__restoreRewired()
       }
     });
 

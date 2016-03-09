@@ -5,7 +5,7 @@ describe('syncMatchers', function() {
     this.preparePerformMatcherProperty = sinon.spy();
     this.prepareRequestMatcherMethod = sinon.spy();
 
-    this.restoreMatchers = injectDependencies(syncMatchers, {
+    this.restoreMatchers = rewireMap(syncMatchers, {
       preparePerformMatcherProperty: this.preparePerformMatcherProperty,
       prepareRequestMatcherMethod: this.prepareRequestMatcherMethod
     });

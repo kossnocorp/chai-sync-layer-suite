@@ -9,7 +9,7 @@
   "author": "Sasha Koss <sasha@toptal.com>",
   "license": "MIT",
   "dependencies": {
-    "rewire-test-helpers": "^1.0.0-rc1"
+    "rewire-test-helpers": "^1.0.0-rc2"
   },
   "devDependencies": {
     "chai": "^1.10.0",

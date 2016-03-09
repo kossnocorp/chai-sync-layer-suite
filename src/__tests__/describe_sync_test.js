@@ -14,7 +14,7 @@ describe('describeSync', function() {
     this.beforeEach = sinon.spy();
     this.afterEach = sinon.spy();
 
-    this.restoreDescribe = injectDependencies(describeSync, {
+    this.restoreDescribe = rewireMap(describeSync, {
       describe: this.describe,
       beforeEach: this.beforeEach,
       afterEach: this.afterEach
